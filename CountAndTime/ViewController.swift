@@ -13,7 +13,13 @@ class CountAndTimeViewController: UIViewController {
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var timeButton: UIButton!
     
-    var count: Int = 0
+    var count: Int = 0 {
+        didSet {
+            DispatchQueue.main.async {
+                self.countLabel.text = String(self.count)
+            }
+        }
+    }
     
     var isTimerOn: Bool = false
     
@@ -41,11 +47,8 @@ class CountAndTimeViewController: UIViewController {
     func countUp() {
         DispatchQueue.global().async {
             while self.isTimerOn {
-                Thread.sleep(forTimeInterval: 0.5)
                 self.count = self.count + 1
-                DispatchQueue.main.async {
-                    self.countLabel.text = String(self.count)
-                }
+                Thread.sleep(forTimeInterval: 0.1)
             }
         }
     }
